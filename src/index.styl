@@ -1,0 +1,78 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+svg.canvas {
+	.hide {
+		stroke: none !important;
+		fill: none !important;
+	}
+
+	interact-line-stype() {
+		fill: none;
+		stroke: transparent;
+		stroke-width: 6px;
+
+		&:hover {
+			stroke: transparentify(blue, 0.1);
+		}
+
+		&.selected {
+			stroke: transparentify(blue, 0.25);
+		}
+	}
+
+	.on-curve-control {
+		fill: transparent;
+		stroke: blue;
+
+		&:hover {
+			fill: transparentify(blue, 0.1);
+		}
+
+		&.selected {
+			fill: transparentify(blue, 1);
+		}
+	}
+
+	.control-cage {
+		stroke: transparentify(black, 0.1);
+
+		&.primary {
+			stroke: transparentify(black, 0.5);
+		}
+	}
+
+	.control-cage-knot {
+		fill: transparent;
+		stroke: transparentify(black, 0.8);
+
+		&.smooth-off-knot {
+			stroke: transparentify(black, 0.4);
+		}
+	}
+
+	.control-cage-mask {
+		interact-line-stype();
+	}
+
+	.outline-arc {
+		fill: none;
+		stroke: black;
+	}
+
+	.interact-arc {
+		interact-line-stype();
+	}
+}
+
+.knot-control-panel {
+	position: absolute;
+	right: 1rem;
+	top: 1rem;
+	width: 24rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
