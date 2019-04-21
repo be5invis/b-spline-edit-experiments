@@ -4,7 +4,7 @@ import * as React from "react";
 import { DraggableCore, DraggableEventHandler } from "react-draggable";
 
 import { term } from "../spline/array-util";
-import { BSplineModel, BSplinePoint, OnKnotType } from "../spline/model";
+import { BSplineModel, OnKnotType } from "../spline/model";
 
 import { LayerProps } from "./shared";
 
