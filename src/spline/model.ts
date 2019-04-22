@@ -51,6 +51,13 @@ export class BSplineModel {
 	@observable.ref
 	selection: null | BSplineSelection = null;
 
+	@observable.ref
+	showOnKnots: boolean = true;
+	@observable.ref
+	showHalfControls: boolean = true;
+	@observable.ref
+	showControlCage: boolean = false;
+
 	eval(contour: number, sink: BezierActionSink<XY<number>>) {
 		evaluateBezier(this.points[contour], sink);
 	}

@@ -12,11 +12,10 @@ import { LayerProps } from "./shared";
 export class BSplineControls extends React.Component<LayerProps> {
 	render() {
 		const { model } = this.props;
-
 		return this.props.model.points.map((zs, c) => (
 			<g key={c}>
 				{zs.map((z, j) => (
-					<BSplineDirectControlEdge model={model} contour={c} index={j} key={j} />
+					<BSplineDirectControlPoint model={model} contour={c} index={j} key={j} />
 				))}
 			</g>
 		));
@@ -26,11 +25,10 @@ export class BSplineControls extends React.Component<LayerProps> {
 export class BSplineControlCage extends React.Component<LayerProps> {
 	render() {
 		const { model } = this.props;
-
 		return this.props.model.points.map((zs, c) => (
 			<g key={c}>
 				{zs.map((z, j) => (
-					<BSplineDirectControlPoint model={model} contour={c} index={j} key={j} />
+					<BSplineDirectControlEdge model={model} contour={c} index={j} key={j} />
 				))}
 			</g>
 		));
@@ -53,7 +51,8 @@ export class BSplineDirectControlPoint extends React.Component<BSplineDirectCont
 		const { model, contour, index } = this.props;
 		const kt = model.identifyOnKnotType(contour, index);
 		const z = term(model.points[contour], index, 0);
-		const sk = kt === OnKnotType.Smooth ? "smooth-off-knot" : "";
+		const sk =
+			kt === OnKnotType.Smooth ? (model.showControlCage ? "smooth-off-knot" : "hide") : "";
 		return (
 			<DraggableCore onDrag={this.handleDrag}>
 				<circle cx={z.x} cy={z.y} r={4} className={"control-cage-knot " + sk} />
@@ -95,8 +94,10 @@ export class BSplineDirectControlEdge extends React.Component<BSplineDirectContr
 				  kt === OnKnotType.CornerTangentBefore ||
 				  kt === OnKnotType.TangentStart
 				? "primary"
-				: "";
-		const ask = sk && this.selected ? "selected" : "";
+				: model.showControlCage
+				? ""
+				: "hide";
+		const ask = sk && this.selected ? " selected" : "";
 		return (
 			<>
 				<line

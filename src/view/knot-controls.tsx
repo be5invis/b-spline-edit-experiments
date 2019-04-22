@@ -3,6 +3,7 @@ import { action } from "mobx";
 import { observer } from "mobx-react";
 import * as React from "react";
 
+import { evaluatePointT } from "../spline/b3";
 import { BSplineModel, OnKnotType } from "../spline/model";
 
 export interface KnotControlPanelProps {
@@ -18,8 +19,48 @@ export class KnotControlPanel extends React.Component<KnotControlPanelProps> {
 		if (model.selection.type === "OnKnot") return <OnKnotController model={model} />;
 		return null;
 	}
+	@action.bound
+	private toggleShowControlCage() {
+		const { model } = this.props;
+		model.showControlCage = !model.showControlCage;
+	}
+	@action.bound
+	private relax() {
+		const { model } = this.props;
+
+		for (const c of model.points) {
+			let ki: number[] = [];
+			for (let j = 0; j < c.length; j++) {
+				const knot = c[j];
+				ki[j] = knot.knotInterval;
+				if (!knot.knotInterval) continue;
+				let arcLength = 0;
+				let z = evaluatePointT(c, j, 0);
+				for (let t = 1; t <= 64; t++) {
+					const z1 = evaluatePointT(c, j, t / 64);
+					arcLength += Math.hypot(z.x - z1.x, z.y - z1.y);
+					z = z1;
+				}
+				ki[j] = arcLength;
+			}
+			for (let j = 0; j < c.length; j++) {
+				c[j].knotInterval = ki[j];
+			}
+		}
+	}
 	render() {
-		return <div className="knot-control-panel">{this.renderInner()}</div>;
+		const { model } = this.props;
+		return (
+			<div className="knot-control-panel">
+				<Checkbox
+					checked={model.showControlCage}
+					onChange={this.toggleShowControlCage}
+					label="Show control cage"
+				/>
+				<Button text="Relax" onClick={this.relax} />
+				{this.renderInner()}
+			</div>
+		);
 	}
 }
 
