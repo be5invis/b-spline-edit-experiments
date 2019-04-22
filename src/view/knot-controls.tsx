@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Slider } from "@blueprintjs/core";
+import { Button, ButtonGroup, Checkbox, Slider } from "@blueprintjs/core";
 import { action } from "mobx";
 import { observer } from "mobx-react";
 import * as React from "react";
@@ -40,17 +40,30 @@ export class ArcController extends React.Component<KnotControlPanelProps> {
 		if (!ck) return;
 		ck.knotInterval = x;
 	}
+	@action.bound
+	private changeSHC() {
+		const ck = getControlKnot(this.props.model, "Arc");
+		if (!ck) return;
+		ck.showHalfControl = !ck.showHalfControl;
+	}
 	render() {
 		const ck = getControlKnot(this.props.model, "Arc");
 		if (!ck) return null;
 		return (
-			<Slider
-				min={0}
-				max={1000}
-				value={ck.knotInterval}
-				labelStepSize={100}
-				onChange={this.changeKnotInterval}
-			/>
+			<>
+				<Checkbox
+					label="Show Half Control"
+					checked={ck.showHalfControl}
+					onChange={this.changeSHC}
+				/>
+				<Slider
+					min={0}
+					max={1000}
+					value={ck.knotInterval}
+					labelStepSize={100}
+					onChange={this.changeKnotInterval}
+				/>
+			</>
 		);
 	}
 }

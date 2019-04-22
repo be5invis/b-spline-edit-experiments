@@ -6,7 +6,7 @@ import { findClosestJAndT } from "./spline/knot-insertion";
 import { BSplineModel, BSplinePoint } from "./spline/model";
 import { BSplineArcs } from "./view/b-spline-arcs";
 import { BSplineControlCage, BSplineControls } from "./view/b-spline-controls";
-import { BSplineOnKnots } from "./view/b-spline-path";
+import { BSplineDice, BSplineOnKnots } from "./view/b-spline-path";
 import { KnotControlPanel } from "./view/knot-controls";
 
 @observer
@@ -18,9 +18,9 @@ class App extends Component {
 		const m = this.model;
 		const zs: BSplinePoint[] = [];
 		zs.push(BSplinePoint.at(100, 100).kd(100));
-		zs.push(BSplinePoint.at(200, 100).kd(100));
-		zs.push(BSplinePoint.at(200, 200).kd(100));
-		zs.push(BSplinePoint.at(100, 200).kd(100));
+		zs.push(BSplinePoint.at(500, 100).kd(100));
+		zs.push(BSplinePoint.at(500, 500).kd(100));
+		zs.push(BSplinePoint.at(100, 500).kd(100));
 		m.points.push(zs);
 	}
 

@@ -11,6 +11,8 @@ export class BSplinePoint {
 	y: number = 0;
 	@observable.ref
 	knotInterval: number = 1;
+	@observable.ref
+	showHalfControl: boolean = false;
 
 	kd(n: number) {
 		const z = new BSplinePoint();

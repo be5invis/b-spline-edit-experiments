@@ -126,6 +126,41 @@ export function evaluateCoefficientsT<K extends BKnot>(
 
 	return coeff;
 }
+export function evaluateDerivativeCoefficientsT<K extends BKnot>(
+	knots: ReadonlyArray<K>,
+	j: number,
+	t: number
+) {
+	let coeff: number[] = new Array(knots.length).fill(0);
+
+	const d0 = term(knots, j, -2).knotInterval;
+	const d1 = term(knots, j, -1).knotInterval;
+	const d2 = term(knots, j, +0).knotInterval;
+	const d3 = term(knots, j, +1).knotInterval;
+	const d4 = term(knots, j, +2).knotInterval;
+
+	const z = termIndex(knots, j, 0);
+	const zm1 = termIndex(knots, j, -1);
+	const zp1 = termIndex(knots, j, +1);
+	const zp2 = termIndex(knots, j, +2);
+
+	//           t
+	//       dM     dP
+	//    cM1   cZ    cP1
+	// zm1    z    zp1    zp2
+	const cM1 = safeDiv3(d0 + d1, d2, 0, t, 1);
+	const cZ = safeDiv3(d1, d2, d3, t, t);
+	const cP1 = safeDiv3(0, d2, d3 + d4, t, 0);
+	const dM = safeDiv3(d1, d2, 0, t, 1);
+	const dP = safeDiv3(0, d2, d3, t, 0);
+
+	coeff[zm1] = -1 * co(dM) * co(cM1);
+	coeff[z] = -1 * (co(dM) * cM1 + dM * co(cZ)) + 1 * co(dP) * co(cZ);
+	coeff[zp1] = -1 * dM * cZ + 1 * (co(dP) * cZ + dP * co(cP1));
+	coeff[zp2] = 1 * dP * cP1;
+
+	return coeff;
+}
 export function evaluatePointT<K extends BKnot>(knots: ReadonlyArray<K>, j: number, t: number) {
 	const d0 = term(knots, j, -2).knotInterval;
 	const d1 = term(knots, j, -1).knotInterval;

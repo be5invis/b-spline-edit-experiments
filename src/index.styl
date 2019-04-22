@@ -36,6 +36,23 @@ svg.canvas {
 		}
 	}
 
+	.on-curve-half-control {
+		fill: transparent;
+		stroke: green;
+
+		&:hover {
+			fill: transparentify(green, 0.1);
+		}
+
+		&.selected {
+			fill: transparentify(green, 1);
+		}
+	}
+
+	.on-curve-half-control-line {
+		stroke: transparentify(black, 0.5);
+	}
+
 	.control-cage {
 		stroke: transparentify(black, 0.1);
 
